@@ -1,0 +1,54 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_IMAGE_NAME: payoneer-app
+      EC2_USER: ${{ secrets.EC2_USER }}
+      EC2_HOST: ${{ secrets.EC2_HOST }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm ci
+        working-directory: ./payoneer
+
+      - name: Build Angular App
+        run: npm run build
+        working-directory: ./payoneer
+
+      - name: Build Docker Image
+        run: docker build -t ${{ env.DOCKER_IMAGE_NAME }} ./payoneer
+
+      - name: Save Docker Image to File
+        run: docker save ${{ env.DOCKER_IMAGE_NAME }} -o ${{ env.DOCKER_IMAGE_NAME }}.tar
+
+      - name: Transfer Docker Image to EC2
+        run: |
+          scp -o StrictHostKeyChecking=no -i ${{ secrets.EC2_SSH_KEY }} ${{ env.DOCKER_IMAGE_NAME }}.tar ${{ env.EC2_USER }}@${{ env.EC2_HOST }}:/home/centos/
+
+      - name: Deploy with Ansible
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: payoneer/ansible/ansible.yml
+          inventory: payoneer/ansible/inventory.ini
+          key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Load Docker Image and Run Container on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_SSH_KEY }} ${{ env.EC2_USER }}@${{ env.EC2_HOST }} \
+          "docker load -i /home/centos/${{ env.DOCKER_IMAGE_NAME }}.tar && \
+          docker run -d --name ${{ env.DOCKER_IMAGE_NAME }} -p 80:80 ${{ env.DOCKER_IMAGE_NAME }}"
