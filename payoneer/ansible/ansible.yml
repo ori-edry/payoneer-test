@@ -1,0 +1,55 @@
+---
+- name: Support Docker deployment
+  hosts: all
+  become: yes
+  vars:
+    log_file: "/var/log/docker_install_ansible.log"
+
+  tasks:
+    - name: Clean yum cache and add Docker repo
+      command: "{{ item }}"
+      loop:
+        - yum clean all
+        - yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+      changed_when: false
+
+    - name: Install Docker packages
+      yum:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+      register: docker_install
+
+    - name: Ensure Docker service is started and enabled
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+      changed_when: false
+
+    - name: Verify Docker is running
+      command: docker run hello-world
+      register: docker_verify
+      changed_when: false
+
+    - name: Log installation results
+      copy:
+        content: |
+          Docker installation: {{ docker_install.changed | ternary('changed', 'unchanged') }}
+          Docker verification: {{ docker_verify.rc == 0 | ternary('successful', 'failed') }}
+          {{ docker_verify.stdout }}
+        dest: "{{ log_file }}"
+      changed_when: false
+
+    - name: Display log contents
+      command: cat {{ log_file }}
+      register: log_contents
+      changed_when: false
+
+    - name: Show log
+      debug:
+        msg: "{{ log_contents.stdout_lines }}"
