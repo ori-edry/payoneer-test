@@ -1,0 +1,64 @@
+---
+- name: Install Minimal Docker
+  hosts: ec2
+  become: yes
+  vars:
+    ansible_user: centos
+  
+  tasks:
+    - name: Install yum-utils
+      yum:
+        name: yum-utils
+        state: present
+
+    - name: Add Docker repository
+      command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+      register: repo_add_result
+
+    - name: Show repository add result
+      debug:
+        var: repo_add_result
+
+    - name: Install Docker Packages
+      yum:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: latest 
+      register: docker_packages_result
+
+    - name: Show Docker packages installation details
+      debug:
+        var: docker_packages_result
+
+    - name: Start Docker Service
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+      register: docker_service_result
+
+    - name: Show Docker service status
+      debug:
+        var: docker_service_result
+
+    - name: Add user to docker group
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+      register: user_to_docker_group_result
+
+    - name: Show user to docker group result
+      debug:
+        var: user_to_docker_group_result
+
+    - name: Verify Docker installation by running hello-world container
+      command: docker run hello-world
+      register: hello_world_result
+      ignore_errors: yes
+
+    - name: Display hello-world result
+      debug:
+        var: hello_world_result.stdout
