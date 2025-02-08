@@ -50,3 +50,78 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.PROJECT_NAME }}:${{ env.CONTAINER_NAME }}-v${{ github.run_number }}
 
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.EC2_HOST }}
+          username: ${{ vars.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Login to Docker Hub
+            echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+            
+            # Define image tag
+            IMAGE_TAG="${{ secrets.DOCKERHUB_USERNAME }}/${{ env.PROJECT_NAME }}:${{ env.CONTAINER_NAME }}-v${{ github.run_number }}"
+            
+            # Store the current running container ID (if exists)
+            CURRENT_CONTAINER=$(docker ps -q --filter name=${{ env.CONTAINER_NAME }})
+            
+            # Pull the new image
+            docker pull ${IMAGE_TAG}
+            
+            # Stop the current container
+            docker stop ${{ env.CONTAINER_NAME }} || true
+            docker rename ${{ env.CONTAINER_NAME }} ${{ env.CONTAINER_NAME }}-old || true
+            
+            # Run the new container
+            docker run -d \
+              --name ${{ env.CONTAINER_NAME }} \
+              -p 80:80 \
+              -p 443:443 \
+              --restart unless-stopped \
+              ${IMAGE_TAG}
+            
+            # Health check and rollback logic
+            echo "Waiting for container to start..."
+            sleep 10
+            
+            MAX_RETRIES=6
+            RETRY_COUNT=0
+            HEALTHY=false
+            
+            while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+              if curl -f http://localhost:80 > /dev/null 2>&1; then
+                HEALTHY=true
+                break
+              fi
+              echo "Health check failed, retrying in 10 seconds..."
+              RETRY_COUNT=$((RETRY_COUNT + 1))
+              sleep 10
+            done
+            
+            if [ "$HEALTHY" = true ]; then
+              echo "New deployment is healthy"
+              docker rm ${{ env.CONTAINER_NAME }}-old || true
+              docker image prune -f
+              exit 0
+            else
+              echo "The new deployment didn't pass the health check. Rolling back to the previous version..."
+              docker stop ${{ env.CONTAINER_NAME }} || true
+              docker rm ${{ env.CONTAINER_NAME }} || true
+              
+              if [ ! -z "$CURRENT_CONTAINER" ]; then
+                echo "Restoring the previous version..."
+                docker rename ${{ env.CONTAINER_NAME }}-old ${{ env.CONTAINER_NAME }} || true
+                docker start ${{ env.CONTAINER_NAME }} || true
+                echo "Rollback completed"
+              else
+                echo "No previous container to rollback to"
+              fi
+              
+              exit 1
+            fi
