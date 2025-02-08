@@ -1,0 +1,247 @@
+No config file found; using defaults
+
+PLAY [Install minimal Docker for web] ************************************************************************************************************************************************************************************************************************************************
+
+TASK [Install yum-utils] *************************************************************************************************************************************************************************************************************************************************************
+ok: [ec2-3-120-134-140.eu-central-1.compute.amazonaws.com] => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python"}, "changed": false, "msg": "", "rc": 0, "results": ["yum-utils-1.1.31-54.el7_8.noarch providing yum-utils is already installed"]}
+
+TASK [Add Docker repository] *********************************************************************************************************************************************************************************************************************************************************
+changed: [ec2-3-120-134-140.eu-central-1.compute.amazonaws.com] => {"changed": true, "cmd": ["yum-config-manager", "--add-repo", "https://download.docker.com/linux/centos/docker-ce.repo"], "delta": "0:00:00.283902", "end": "2025-02-08 15:00:26.957419", "rc": 0, "start": "2025-02-08 15:00:26.673517", "stderr": "", "stderr_lines": [], "stdout": "Loaded plugins: fastestmirror\nadding repo from: https://download.docker.com/linux/centos/docker-ce.repo\ngrabbing file https://download.docker.com/linux/centos/docker-ce.repo to /etc/yum.repos.d/docker-ce.repo\nrepo saved to /etc/yum.repos.d/docker-ce.repo", "stdout_lines": ["Loaded plugins: fastestmirror", "adding repo from: https://download.docker.com/linux/centos/docker-ce.repo", "grabbing file https://download.docker.com/linux/centos/docker-ce.repo to /etc/yum.repos.d/docker-ce.repo", "repo saved to /etc/yum.repos.d/docker-ce.repo"]}
+
+TASK [Show repository add result] ****************************************************************************************************************************************************************************************************************************************************
+ok: [ec2-3-120-134-140.eu-central-1.compute.amazonaws.com] => {
+    "repo_add_result": {
+        "changed": true,
+        "cmd": [
+            "yum-config-manager",
+            "--add-repo",
+            "https://download.docker.com/linux/centos/docker-ce.repo"
+        ],
+        "delta": "0:00:00.283902",
+        "end": "2025-02-08 15:00:26.957419",
+        "failed": false,
+        "rc": 0,
+        "start": "2025-02-08 15:00:26.673517",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "Loaded plugins: fastestmirror\nadding repo from: https://download.docker.com/linux/centos/docker-ce.repo\ngrabbing file https://download.docker.com/linux/centos/docker-ce.repo to /etc/yum.repos.d/docker-ce.repo\nrepo saved to /etc/yum.repos.d/docker-ce.repo",
+        "stdout_lines": [
+            "Loaded plugins: fastestmirror",
+            "adding repo from: https://download.docker.com/linux/centos/docker-ce.repo",
+            "grabbing file https://download.docker.com/linux/centos/docker-ce.repo to /etc/yum.repos.d/docker-ce.repo",
+            "repo saved to /etc/yum.repos.d/docker-ce.repo"
+        ]
+    }
+}
+
+TASK [Install Docker Packages] *******************************************************************************************************************************************************************************************************************************************************
+changed: [ec2-3-120-134-140.eu-central-1.compute.amazonaws.com] => {"ansible_facts": {"pkg_mgr": "yum"}, "changed": true, "changes": {"installed": ["docker-ce", "docker-ce-cli", "containerd.io"], "updated": []}, "msg": "warning: /var/cache/yum/x86_64/7/docker-ce-stable/packages/docker-buildx-plugin-0.14.1-1.el7.x86_64.rpm: Header V4 RSA/SHA512 Signature, key ID 621e9f35: NOKEY\nImporting GPG key 0x621E9F35:\n Userid     : \"Docker Release (CE rpm) <docker@docker.com>\"\n Fingerprint: 060a 61c5 1b55 8a7f 742b 77aa c52f eb6b 621e 9f35\n From       : https://download.docker.com/linux/centos/gpg\n", "rc": 0, "results": ["Loaded plugins: fastestmirror\nLoading mirror speeds from cached hostfile\n * epel: d2lzkl7pfhq30w.cloudfront.net\nResolving Dependencies\n--> Running transaction check\n---> Package containerd.io.x86_64 0:1.6.33-3.1.el7 will be installed\n--> Processing Dependency: container-selinux >= 2:2.74 for package: containerd.io-1.6.33-3.1.el7.x86_64\n---> Package docker-ce.x86_64 3:26.1.4-1.el7 will be installed\n--> Processing Dependency: docker-ce-rootless-extras for package: 3:docker-ce-26.1.4-1.el7.x86_64\n---> Package docker-ce-cli.x86_64 1:26.1.4-1.el7 will be installed\n--> Processing Dependency: docker-buildx-plugin for package: 1:docker-ce-cli-26.1.4-1.el7.x86_64\n--> Processing Dependency: docker-compose-plugin for package: 1:docker-ce-cli-26.1.4-1.el7.x86_64\n--> Running transaction check\n---> Package container-selinux.noarch 2:2.119.2-1.911c772.el7_8 will be installed\n---> Package docker-buildx-plugin.x86_64 0:0.14.1-1.el7 will be installed\n---> Package docker-ce-rootless-extras.x86_64 0:26.1.4-1.el7 will be installed\n--> Processing Dependency: fuse-overlayfs >= 0.7 for package: docker-ce-rootless-extras-26.1.4-1.el7.x86_64\n--> Processing Dependency: slirp4netns >= 0.4 for package: docker-ce-rootless-extras-26.1.4-1.el7.x86_64\n---> Package docker-compose-plugin.x86_64 0:2.27.1-1.el7 will be installed\n--> Running transaction check\n---> Package fuse-overlayfs.x86_64 0:0.7.2-6.el7_8 will be installed\n--> Processing Dependency: libfuse3.so.3(FUSE_3.2)(64bit) for package: fuse-overlayfs-0.7.2-6.el7_8.x86_64\n--> Processing Dependency: libfuse3.so.3(FUSE_3.0)(64bit) for package: fuse-overlayfs-0.7.2-6.el7_8.x86_64\n--> Processing Dependency: libfuse3.so.3()(64bit) for package: fuse-overlayfs-0.7.2-6.el7_8.x86_64\n---> Package slirp4netns.x86_64 0:0.4.3-4.el7_8 will be installed\n--> Running transaction check\n---> Package fuse3-libs.x86_64 0:3.6.1-4.el7 will be installed\n--> Finished Dependency Resolution\n\nDependencies Resolved\n\n================================================================================\n Package                Arch   Version                   Repository        Size\n================================================================================\nInstalling:\n containerd.io          x86_64 1.6.33-3.1.el7            docker-ce-stable  35 M\n docker-ce              x86_64 3:26.1.4-1.el7            docker-ce-stable  27 M\n docker-ce-cli          x86_64 1:26.1.4-1.el7            docker-ce-stable  15 M\nInstalling for dependencies:\n container-selinux      noarch 2:2.119.2-1.911c772.el7_8 extras            40 k\n docker-buildx-plugin   x86_64 0.14.1-1.el7              docker-ce-stable  14 M\n docker-ce-rootless-extras\n                        x86_64 26.1.4-1.el7              docker-ce-stable 9.4 M\n docker-compose-plugin  x86_64 2.27.1-1.el7              docker-ce-stable  13 M\n fuse-overlayfs         x86_64 0.7.2-6.el7_8             extras            54 k\n fuse3-libs             x86_64 3.6.1-4.el7               extras            82 k\n slirp4netns            x86_64 0.4.3-4.el7_8             extras            81 k\n\nTransaction Summary\n================================================================================\nInstall  3 Packages (+7 Dependent packages)\n\nTotal download size: 114 M\nInstalled size: 401 M\nDownloading packages:\nPublic key for docker-buildx-plugin-0.14.1-1.el7.x86_64.rpm is not installed\n--------------------------------------------------------------------------------\nTotal                                               61 MB/s | 114 MB  00:01     \nRetrieving key from https://download.docker.com/linux/centos/gpg\nRunning transaction check\nRunning transaction test\nTransaction test succeeded\nRunning transaction\n  Installing : 2:container-selinux-2.119.2-1.911c772.el7_8.noarch          1/10 \n  Installing : containerd.io-1.6.33-3.1.el7.x86_64                         2/10 \n  Installing : docker-buildx-plugin-0.14.1-1.el7.x86_64                    3/10 \n  Installing : slirp4netns-0.4.3-4.el7_8.x86_64                            4/10 \n  Installing : fuse3-libs-3.6.1-4.el7.x86_64                               5/10 \n  Installing : fuse-overlayfs-0.7.2-6.el7_8.x86_64                         6/10 \n  Installing : docker-compose-plugin-2.27.1-1.el7.x86_64                   7/10 \n  Installing : 1:docker-ce-cli-26.1.4-1.el7.x86_64                         8/10 \n  Installing : docker-ce-rootless-extras-26.1.4-1.el7.x86_64               9/10 \n  Installing : 3:docker-ce-26.1.4-1.el7.x86_64                            10/10 \n  Verifying  : docker-compose-plugin-2.27.1-1.el7.x86_64                   1/10 \n  Verifying  : fuse3-libs-3.6.1-4.el7.x86_64                               2/10 \n  Verifying  : fuse-overlayfs-0.7.2-6.el7_8.x86_64                         3/10 \n  Verifying  : slirp4netns-0.4.3-4.el7_8.x86_64                            4/10 \n  Verifying  : 2:container-selinux-2.119.2-1.911c772.el7_8.noarch          5/10 \n  Verifying  : containerd.io-1.6.33-3.1.el7.x86_64                         6/10 \n  Verifying  : 3:docker-ce-26.1.4-1.el7.x86_64                             7/10 \n  Verifying  : 1:docker-ce-cli-26.1.4-1.el7.x86_64                         8/10 \n  Verifying  : docker-ce-rootless-extras-26.1.4-1.el7.x86_64               9/10 \n  Verifying  : docker-buildx-plugin-0.14.1-1.el7.x86_64                   10/10 \n\nInstalled:\n  containerd.io.x86_64 0:1.6.33-3.1.el7     docker-ce.x86_64 3:26.1.4-1.el7    \n  docker-ce-cli.x86_64 1:26.1.4-1.el7      \n\nDependency Installed:\n  container-selinux.noarch 2:2.119.2-1.911c772.el7_8                            \n  docker-buildx-plugin.x86_64 0:0.14.1-1.el7                                    \n  docker-ce-rootless-extras.x86_64 0:26.1.4-1.el7                               \n  docker-compose-plugin.x86_64 0:2.27.1-1.el7                                   \n  fuse-overlayfs.x86_64 0:0.7.2-6.el7_8                                         \n  fuse3-libs.x86_64 0:3.6.1-4.el7                                               \n  slirp4netns.x86_64 0:0.4.3-4.el7_8                                            \n\nComplete!\n"]}
+
+TASK [Show Docker packages installation details] *************************************************************************************************************************************************************************************************************************************
+ok: [ec2-3-120-134-140.eu-central-1.compute.amazonaws.com] => {
+    "docker_packages_result": {
+        "ansible_facts": {
+            "pkg_mgr": "yum"
+        },
+        "changed": true,
+        "changes": {
+            "installed": [
+                "docker-ce",
+                "docker-ce-cli",
+                "containerd.io"
+            ],
+            "updated": []
+        },
+        "failed": false,
+        "msg": "warning: /var/cache/yum/x86_64/7/docker-ce-stable/packages/docker-buildx-plugin-0.14.1-1.el7.x86_64.rpm: Header V4 RSA/SHA512 Signature, key ID 621e9f35: NOKEY\nImporting GPG key 0x621E9F35:\n Userid     : \"Docker Release (CE rpm) <docker@docker.com>\"\n Fingerprint: 060a 61c5 1b55 8a7f 742b 77aa c52f eb6b 621e 9f35\n From       : https://download.docker.com/linux/centos/gpg\n",
+        "rc": 0,
+        "results": [
+            "Loaded plugins: fastestmirror\nLoading mirror speeds from cached hostfile\n * epel: d2lzkl7pfhq30w.cloudfront.net\nResolving Dependencies\n--> Running transaction check\n---> Package containerd.io.x86_64 0:1.6.33-3.1.el7 will be installed\n--> Processing Dependency: container-selinux >= 2:2.74 for package: containerd.io-1.6.33-3.1.el7.x86_64\n---> Package docker-ce.x86_64 3:26.1.4-1.el7 will be installed\n--> Processing Dependency: docker-ce-rootless-extras for package: 3:docker-ce-26.1.4-1.el7.x86_64\n---> Package docker-ce-cli.x86_64 1:26.1.4-1.el7 will be installed\n--> Processing Dependency: docker-buildx-plugin for package: 1:docker-ce-cli-26.1.4-1.el7.x86_64\n--> Processing Dependency: docker-compose-plugin for package: 1:docker-ce-cli-26.1.4-1.el7.x86_64\n--> Running transaction check\n---> Package container-selinux.noarch 2:2.119.2-1.911c772.el7_8 will be installed\n---> Package docker-buildx-plugin.x86_64 0:0.14.1-1.el7 will be installed\n---> Package docker-ce-rootless-extras.x86_64 0:26.1.4-1.el7 will be installed\n--> Processing Dependency: fuse-overlayfs >= 0.7 for package: docker-ce-rootless-extras-26.1.4-1.el7.x86_64\n--> Processing Dependency: slirp4netns >= 0.4 for package: docker-ce-rootless-extras-26.1.4-1.el7.x86_64\n---> Package docker-compose-plugin.x86_64 0:2.27.1-1.el7 will be installed\n--> Running transaction check\n---> Package fuse-overlayfs.x86_64 0:0.7.2-6.el7_8 will be installed\n--> Processing Dependency: libfuse3.so.3(FUSE_3.2)(64bit) for package: fuse-overlayfs-0.7.2-6.el7_8.x86_64\n--> Processing Dependency: libfuse3.so.3(FUSE_3.0)(64bit) for package: fuse-overlayfs-0.7.2-6.el7_8.x86_64\n--> Processing Dependency: libfuse3.so.3()(64bit) for package: fuse-overlayfs-0.7.2-6.el7_8.x86_64\n---> Package slirp4netns.x86_64 0:0.4.3-4.el7_8 will be installed\n--> Running transaction check\n---> Package fuse3-libs.x86_64 0:3.6.1-4.el7 will be installed\n--> Finished Dependency Resolution\n\nDependencies Resolved\n\n================================================================================\n Package                Arch   Version                   Repository        Size\n================================================================================\nInstalling:\n containerd.io          x86_64 1.6.33-3.1.el7            docker-ce-stable  35 M\n docker-ce              x86_64 3:26.1.4-1.el7            docker-ce-stable  27 M\n docker-ce-cli          x86_64 1:26.1.4-1.el7            docker-ce-stable  15 M\nInstalling for dependencies:\n container-selinux      noarch 2:2.119.2-1.911c772.el7_8 extras            40 k\n docker-buildx-plugin   x86_64 0.14.1-1.el7              docker-ce-stable  14 M\n docker-ce-rootless-extras\n                        x86_64 26.1.4-1.el7              docker-ce-stable 9.4 M\n docker-compose-plugin  x86_64 2.27.1-1.el7              docker-ce-stable  13 M\n fuse-overlayfs         x86_64 0.7.2-6.el7_8             extras            54 k\n fuse3-libs             x86_64 3.6.1-4.el7               extras            82 k\n slirp4netns            x86_64 0.4.3-4.el7_8             extras            81 k\n\nTransaction Summary\n================================================================================\nInstall  3 Packages (+7 Dependent packages)\n\nTotal download size: 114 M\nInstalled size: 401 M\nDownloading packages:\nPublic key for docker-buildx-plugin-0.14.1-1.el7.x86_64.rpm is not installed\n--------------------------------------------------------------------------------\nTotal                                               61 MB/s | 114 MB  00:01     \nRetrieving key from https://download.docker.com/linux/centos/gpg\nRunning transaction check\nRunning transaction test\nTransaction test succeeded\nRunning transaction\n  Installing : 2:container-selinux-2.119.2-1.911c772.el7_8.noarch          1/10 \n  Installing : containerd.io-1.6.33-3.1.el7.x86_64                         2/10 \n  Installing : docker-buildx-plugin-0.14.1-1.el7.x86_64                    3/10 \n  Installing : slirp4netns-0.4.3-4.el7_8.x86_64                            4/10 \n  Installing : fuse3-libs-3.6.1-4.el7.x86_64                               5/10 \n  Installing : fuse-overlayfs-0.7.2-6.el7_8.x86_64                         6/10 \n  Installing : docker-compose-plugin-2.27.1-1.el7.x86_64                   7/10 \n  Installing : 1:docker-ce-cli-26.1.4-1.el7.x86_64                         8/10 \n  Installing : docker-ce-rootless-extras-26.1.4-1.el7.x86_64               9/10 \n  Installing : 3:docker-ce-26.1.4-1.el7.x86_64                            10/10 \n  Verifying  : docker-compose-plugin-2.27.1-1.el7.x86_64                   1/10 \n  Verifying  : fuse3-libs-3.6.1-4.el7.x86_64                               2/10 \n  Verifying  : fuse-overlayfs-0.7.2-6.el7_8.x86_64                         3/10 \n  Verifying  : slirp4netns-0.4.3-4.el7_8.x86_64                            4/10 \n  Verifying  : 2:container-selinux-2.119.2-1.911c772.el7_8.noarch          5/10 \n  Verifying  : containerd.io-1.6.33-3.1.el7.x86_64                         6/10 \n  Verifying  : 3:docker-ce-26.1.4-1.el7.x86_64                             7/10 \n  Verifying  : 1:docker-ce-cli-26.1.4-1.el7.x86_64                         8/10 \n  Verifying  : docker-ce-rootless-extras-26.1.4-1.el7.x86_64               9/10 \n  Verifying  : docker-buildx-plugin-0.14.1-1.el7.x86_64                   10/10 \n\nInstalled:\n  containerd.io.x86_64 0:1.6.33-3.1.el7     docker-ce.x86_64 3:26.1.4-1.el7    \n  docker-ce-cli.x86_64 1:26.1.4-1.el7      \n\nDependency Installed:\n  container-selinux.noarch 2:2.119.2-1.911c772.el7_8                            \n  docker-buildx-plugin.x86_64 0:0.14.1-1.el7                                    \n  docker-ce-rootless-extras.x86_64 0:26.1.4-1.el7                               \n  docker-compose-plugin.x86_64 0:2.27.1-1.el7                                   \n  fuse-overlayfs.x86_64 0:0.7.2-6.el7_8                                         \n  fuse3-libs.x86_64 0:3.6.1-4.el7                                               \n  slirp4netns.x86_64 0:0.4.3-4.el7_8                                            \n\nComplete!\n"
+        ]
+    }
+}
+
+TASK [Start Docker Service] **********************************************************************************************************************************************************************************************************************************************************
+changed: [ec2-3-120-134-140.eu-central-1.compute.amazonaws.com] => {"changed": true, "enabled": true, "name": "docker", "state": "started", "status": {"ActiveEnterTimestampMonotonic": "0", "ActiveExitTimestampMonotonic": "0", "ActiveState": "inactive", "After": "basic.target time-set.target containerd.service network-online.target firewalld.service docker.socket systemd-journald.socket system.slice", "AllowIsolate": "no", "AmbientCapabilities": "0", "AssertResult": "no", "AssertTimestampMonotonic": "0", "Before": "shutdown.target", "BlockIOAccounting": "no", "BlockIOWeight": "18446744073709551615", "CPUAccounting": "no", "CPUQuotaPerSecUSec": "infinity", "CPUSchedulingPolicy": "0", "CPUSchedulingPriority": "0", "CPUSchedulingResetOnFork": "no", "CPUShares": "18446744073709551615", "CanIsolate": "no", "CanReload": "yes", "CanStart": "yes", "CanStop": "yes", "CapabilityBoundingSet": "18446744073709551615", "CollectMode": "inactive", "ConditionResult": "no", "ConditionTimestampMonotonic": "0", "Conflicts": "shutdown.target", "ControlPID": "0", "DefaultDependencies": "yes", "Delegate": "yes", "Description": "Docker Application Container Engine", "DevicePolicy": "auto", "Documentation": "https://docs.docker.com", "ExecMainCode": "0", "ExecMainExitTimestampMonotonic": "0", "ExecMainPID": "0", "ExecMainStartTimestampMonotonic": "0", "ExecMainStatus": "0", "ExecReload": "{ path=/bin/kill ; argv[]=/bin/kill -s HUP $MAINPID ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "ExecStart": "{ path=/usr/bin/dockerd ; argv[]=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "FailureAction": "none", "FileDescriptorStoreMax": "0", "FragmentPath": "/usr/lib/systemd/system/docker.service", "GuessMainPID": "yes", "IOScheduling": "0", "Id": "docker.service", "IgnoreOnIsolate": "no", "IgnoreOnSnapshot": "no", "IgnoreSIGPIPE": "yes", "InactiveEnterTimestampMonotonic": "0", "InactiveExitTimestampMonotonic": "0", "JobTimeoutAction": "none", "JobTimeoutUSec": "0", "KillMode": "process", "KillSignal": "15", "LimitAS": "18446744073709551615", "LimitCORE": "18446744073709551615", "LimitCPU": "18446744073709551615", "LimitDATA": "18446744073709551615", "LimitFSIZE": "18446744073709551615", "LimitLOCKS": "18446744073709551615", "LimitMEMLOCK": "65536", "LimitMSGQUEUE": "819200", "LimitNICE": "0", "LimitNOFILE": "524288", "LimitNPROC": "18446744073709551615", "LimitRSS": "18446744073709551615", "LimitRTPRIO": "0", "LimitRTTIME": "18446744073709551615", "LimitSIGPENDING": "7158", "LimitSTACK": "18446744073709551615", "LoadState": "loaded", "MainPID": "0", "MemoryAccounting": "no", "MemoryCurrent": "18446744073709551615", "MemoryLimit": "18446744073709551615", "MountFlags": "0", "Names": "docker.service", "NeedDaemonReload": "no", "Nice": "0", "NoNewPrivileges": "no", "NonBlocking": "no", "NotifyAccess": "main", "OOMScoreAdjust": "-500", "OnFailureJobMode": "replace", "PermissionsStartOnly": "no", "PrivateDevices": "no", "PrivateNetwork": "no", "PrivateTmp": "no", "ProtectHome": "no", "ProtectSystem": "no", "RefuseManualStart": "no", "RefuseManualStop": "no", "RemainAfterExit": "no", "Requires": "docker.socket basic.target system.slice", "Restart": "always", "RestartUSec": "2s", "Result": "success", "RootDirectoryStartOnly": "no", "RuntimeDirectoryMode": "0755", "SameProcessGroup": "no", "SecureBits": "0", "SendSIGHUP": "no", "SendSIGKILL": "yes", "Slice": "system.slice", "StandardError": "inherit", "StandardInput": "null", "StandardOutput": "journal", "StartLimitAction": "none", "StartLimitBurst": "3", "StartLimitInterval": "60000000", "StartupBlockIOWeight": "18446744073709551615", "StartupCPUShares": "18446744073709551615", "StatusErrno": "0", "StopWhenUnneeded": "no", "SubState": "dead", "SyslogLevelPrefix": "yes", "SyslogPriority": "30", "SystemCallErrorNumber": "0", "TTYReset": "no", "TTYVHangup": "no", "TTYVTDisallocate": "no", "TasksAccounting": "no", "TasksCurrent": "18446744073709551615", "TasksMax": "18446744073709551615", "TimeoutStartUSec": "0", "TimeoutStopUSec": "1min 30s", "TimerSlackNSec": "50000", "Transient": "no", "TriggeredBy": "docker.socket", "Type": "notify", "UMask": "0022", "UnitFilePreset": "disabled", "UnitFileState": "disabled", "Wants": "network-online.target containerd.service", "WatchdogTimestampMonotonic": "0", "WatchdogUSec": "0"}}
+
+TASK [Show Docker service status] ****************************************************************************************************************************************************************************************************************************************************
+ok: [ec2-3-120-134-140.eu-central-1.compute.amazonaws.com] => {
+    "docker_service_result": {
+        "changed": true,
+        "enabled": true,
+        "failed": false,
+        "name": "docker",
+        "state": "started",
+        "status": {
+            "ActiveEnterTimestampMonotonic": "0",
+            "ActiveExitTimestampMonotonic": "0",
+            "ActiveState": "inactive",
+            "After": "basic.target time-set.target containerd.service network-online.target firewalld.service docker.socket systemd-journald.socket system.slice",
+            "AllowIsolate": "no",
+            "AmbientCapabilities": "0",
+            "AssertResult": "no",
+            "AssertTimestampMonotonic": "0",
+            "Before": "shutdown.target",
+            "BlockIOAccounting": "no",
+            "BlockIOWeight": "18446744073709551615",
+            "CPUAccounting": "no",
+            "CPUQuotaPerSecUSec": "infinity",
+            "CPUSchedulingPolicy": "0",
+            "CPUSchedulingPriority": "0",
+            "CPUSchedulingResetOnFork": "no",
+            "CPUShares": "18446744073709551615",
+            "CanIsolate": "no",
+            "CanReload": "yes",
+            "CanStart": "yes",
+            "CanStop": "yes",
+            "CapabilityBoundingSet": "18446744073709551615",
+            "CollectMode": "inactive",
+            "ConditionResult": "no",
+            "ConditionTimestampMonotonic": "0",
+            "Conflicts": "shutdown.target",
+            "ControlPID": "0",
+            "DefaultDependencies": "yes",
+            "Delegate": "yes",
+            "Description": "Docker Application Container Engine",
+            "DevicePolicy": "auto",
+            "Documentation": "https://docs.docker.com",
+            "ExecMainCode": "0",
+            "ExecMainExitTimestampMonotonic": "0",
+            "ExecMainPID": "0",
+            "ExecMainStartTimestampMonotonic": "0",
+            "ExecMainStatus": "0",
+            "ExecReload": "{ path=/bin/kill ; argv[]=/bin/kill -s HUP $MAINPID ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }",
+            "ExecStart": "{ path=/usr/bin/dockerd ; argv[]=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }",
+            "FailureAction": "none",
+            "FileDescriptorStoreMax": "0",
+            "FragmentPath": "/usr/lib/systemd/system/docker.service",
+            "GuessMainPID": "yes",
+            "IOScheduling": "0",
+            "Id": "docker.service",
+            "IgnoreOnIsolate": "no",
+            "IgnoreOnSnapshot": "no",
+            "IgnoreSIGPIPE": "yes",
+            "InactiveEnterTimestampMonotonic": "0",
+            "InactiveExitTimestampMonotonic": "0",
+            "JobTimeoutAction": "none",
+            "JobTimeoutUSec": "0",
+            "KillMode": "process",
+            "KillSignal": "15",
+            "LimitAS": "18446744073709551615",
+            "LimitCORE": "18446744073709551615",
+            "LimitCPU": "18446744073709551615",
+            "LimitDATA": "18446744073709551615",
+            "LimitFSIZE": "18446744073709551615",
+            "LimitLOCKS": "18446744073709551615",
+            "LimitMEMLOCK": "65536",
+            "LimitMSGQUEUE": "819200",
+            "LimitNICE": "0",
+            "LimitNOFILE": "524288",
+            "LimitNPROC": "18446744073709551615",
+            "LimitRSS": "18446744073709551615",
+            "LimitRTPRIO": "0",
+            "LimitRTTIME": "18446744073709551615",
+            "LimitSIGPENDING": "7158",
+            "LimitSTACK": "18446744073709551615",
+            "LoadState": "loaded",
+            "MainPID": "0",
+            "MemoryAccounting": "no",
+            "MemoryCurrent": "18446744073709551615",
+            "MemoryLimit": "18446744073709551615",
+            "MountFlags": "0",
+            "Names": "docker.service",
+            "NeedDaemonReload": "no",
+            "Nice": "0",
+            "NoNewPrivileges": "no",
+            "NonBlocking": "no",
+            "NotifyAccess": "main",
+            "OOMScoreAdjust": "-500",
+            "OnFailureJobMode": "replace",
+            "PermissionsStartOnly": "no",
+            "PrivateDevices": "no",
+            "PrivateNetwork": "no",
+            "PrivateTmp": "no",
+            "ProtectHome": "no",
+            "ProtectSystem": "no",
+            "RefuseManualStart": "no",
+            "RefuseManualStop": "no",
+            "RemainAfterExit": "no",
+            "Requires": "docker.socket basic.target system.slice",
+            "Restart": "always",
+            "RestartUSec": "2s",
+            "Result": "success",
+            "RootDirectoryStartOnly": "no",
+            "RuntimeDirectoryMode": "0755",
+            "SameProcessGroup": "no",
+            "SecureBits": "0",
+            "SendSIGHUP": "no",
+            "SendSIGKILL": "yes",
+            "Slice": "system.slice",
+            "StandardError": "inherit",
+            "StandardInput": "null",
+            "StandardOutput": "journal",
+            "StartLimitAction": "none",
+            "StartLimitBurst": "3",
+            "StartLimitInterval": "60000000",
+            "StartupBlockIOWeight": "18446744073709551615",
+            "StartupCPUShares": "18446744073709551615",
+            "StatusErrno": "0",
+            "StopWhenUnneeded": "no",
+            "SubState": "dead",
+            "SyslogLevelPrefix": "yes",
+            "SyslogPriority": "30",
+            "SystemCallErrorNumber": "0",
+            "TTYReset": "no",
+            "TTYVHangup": "no",
+            "TTYVTDisallocate": "no",
+            "TasksAccounting": "no",
+            "TasksCurrent": "18446744073709551615",
+            "TasksMax": "18446744073709551615",
+            "TimeoutStartUSec": "0",
+            "TimeoutStopUSec": "1min 30s",
+            "TimerSlackNSec": "50000",
+            "Transient": "no",
+            "TriggeredBy": "docker.socket",
+            "Type": "notify",
+            "UMask": "0022",
+            "UnitFilePreset": "disabled",
+            "UnitFileState": "disabled",
+            "Wants": "network-online.target containerd.service",
+            "WatchdogTimestampMonotonic": "0",
+            "WatchdogUSec": "0"
+        }
+    }
+}
+
+TASK [Add user to docker group] ******************************************************************************************************************************************************************************************************************************************************
+changed: [ec2-3-120-134-140.eu-central-1.compute.amazonaws.com] => {"append": true, "changed": true, "comment": "Cloud User", "group": 1000, "groups": "docker", "home": "/home/centos", "move_home": false, "name": "centos", "shell": "/bin/bash", "state": "present", "uid": 1000}
+
+TASK [Show user to docker group result] **********************************************************************************************************************************************************************************************************************************************
+ok: [ec2-3-120-134-140.eu-central-1.compute.amazonaws.com] => {
+    "user_to_docker_group_result": {
+        "append": true,
+        "changed": true,
+        "comment": "Cloud User",
+        "failed": false,
+        "group": 1000,
+        "groups": "docker",
+        "home": "/home/centos",
+        "move_home": false,
+        "name": "centos",
+        "shell": "/bin/bash",
+        "state": "present",
+        "uid": 1000
+    }
+}
+
+TASK [Verify Docker installation by running hello-world container] *******************************************************************************************************************************************************************************************************************
+changed: [ec2-3-120-134-140.eu-central-1.compute.amazonaws.com] => {"changed": true, "cmd": ["docker", "run", "hello-world"], "delta": "0:00:02.367424", "end": "2025-02-08 15:01:10.189356", "rc": 0, "start": "2025-02-08 15:01:07.821932", "stderr": "Unable to find image 'hello-world:latest' locally\nlatest: Pulling from library/hello-world\ne6590344b1a5: Pulling fs layer\ne6590344b1a5: Verifying Checksum\ne6590344b1a5: Download complete\ne6590344b1a5: Pull complete\nDigest: sha256:d715f14f9eca81473d9112df50457893aa4d099adeb4729f679006bf5ea12407\nStatus: Downloaded newer image for hello-world:latest", "stderr_lines": ["Unable to find image 'hello-world:latest' locally", "latest: Pulling from library/hello-world", "e6590344b1a5: Pulling fs layer", "e6590344b1a5: Verifying Checksum", "e6590344b1a5: Download complete", "e6590344b1a5: Pull complete", "Digest: sha256:d715f14f9eca81473d9112df50457893aa4d099adeb4729f679006bf5ea12407", "Status: Downloaded newer image for hello-world:latest"], "stdout": "\nHello from Docker!\nThis message shows that your installation appears to be working correctly.\n\nTo generate this message, Docker took the following steps:\n 1. The Docker client contacted the Docker daemon.\n 2. The Docker daemon pulled the \"hello-world\" image from the Docker Hub.\n    (amd64)\n 3. The Docker daemon created a new container from that image which runs the\n    executable that produces the output you are currently reading.\n 4. The Docker daemon streamed that output to the Docker client, which sent it\n    to your terminal.\n\nTo try something more ambitious, you can run an Ubuntu container with:\n $ docker run -it ubuntu bash\n\nShare images, automate workflows, and more with a free Docker ID:\n https://hub.docker.com/\n\nFor more examples and ideas, visit:\n https://docs.docker.com/get-started/", "stdout_lines": ["", "Hello from Docker!", "This message shows that your installation appears to be working correctly.", "", "To generate this message, Docker took the following steps:", " 1. The Docker client contacted the Docker daemon.", " 2. The Docker daemon pulled the \"hello-world\" image from the Docker Hub.", "    (amd64)", " 3. The Docker daemon created a new container from that image which runs the", "    executable that produces the output you are currently reading.", " 4. The Docker daemon streamed that output to the Docker client, which sent it", "    to your terminal.", "", "To try something more ambitious, you can run an Ubuntu container with:", " $ docker run -it ubuntu bash", "", "Share images, automate workflows, and more with a free Docker ID:", " https://hub.docker.com/", "", "For more examples and ideas, visit:", " https://docs.docker.com/get-started/"]}
+
+TASK [Display hello-world result] ****************************************************************************************************************************************************************************************************************************************************
+ok: [ec2-3-120-134-140.eu-central-1.compute.amazonaws.com] => {
+    "hello_world_result.stdout": "\nHello from Docker!\nThis message shows that your installation appears to be working correctly.\n\nTo generate this message, Docker took the following steps:\n 1. The Docker client contacted the Docker daemon.\n 2. The Docker daemon pulled the \"hello-world\" image from the Docker Hub.\n    (amd64)\n 3. The Docker daemon created a new container from that image which runs the\n    executable that produces the output you are currently reading.\n 4. The Docker daemon streamed that output to the Docker client, which sent it\n    to your terminal.\n\nTo try something more ambitious, you can run an Ubuntu container with:\n $ docker run -it ubuntu bash\n\nShare images, automate workflows, and more with a free Docker ID:\n https://hub.docker.com/\n\nFor more examples and ideas, visit:\n https://docs.docker.com/get-started/"
+}
+
+PLAY RECAP ***************************************************************************************************************************************************************************************************************************************************************************
+ec2-3-120-134-140.eu-central-1.compute.amazonaws.com : ok=11   changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
